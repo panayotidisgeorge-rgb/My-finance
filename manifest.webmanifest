@@ -1,13 +1,13 @@
 {
  "id": "./",
- "name": "My Finance",
- "short_name": "My Finance",
+ "name": "SpendPattern",
+ "short_name": "SpendPattern",
  "description": "Private expense and income analyser. Your data stays on this device.",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
- "background_color": "#000000",
+ "background_color": "#05061a",
  "theme_color": "#000000",
  "lang": "en",
  "icons": [
