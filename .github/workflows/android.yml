@@ -21,6 +21,12 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+      - name: Use the SpendPattern icon
+        working-directory: android-app
+        run: |
+          res=android/app/src/main/res
+          for d in icons/mipmap-*; do cp "$d"/*.png "$res/$(basename $d)/"; done
+          cp icons/ic_launcher_background.xml "$res/values/ic_launcher_background.xml"
       - name: Sign test builds with the fixed test key (so updates install over old versions)
         working-directory: android-app
         run: |
