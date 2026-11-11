@@ -21,6 +21,12 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+      - name: Diagnostics (plugin registration)
+        working-directory: android-app
+        run: |
+          cat android/app/src/main/assets/capacitor.plugins.json || true
+          grep -rho "registerPlugin([^)]*)" node_modules/@aparajita/capacitor-biometric-auth/dist/esm/*.js | head -3 || true
+          grep -rh "USE_BIOMETRIC" node_modules/@aparajita/capacitor-biometric-auth/android/src/main/AndroidManifest.xml || true
       - name: Use the SpendPattern icon
         working-directory: android-app
         run: |

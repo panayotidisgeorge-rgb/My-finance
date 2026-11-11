@@ -125,7 +125,7 @@ const fyLbl=y=>(EXT.cfg.fys||1)==1?String(y):'FY'+String(y).slice(2);
 const fyYtdEnd=y=>{const n=(Math.floor(MAX/100)*12+MAX%100)-(Math.floor(fyStart(fyOf(MAX))/100)*12+fyStart(fyOf(MAX))%100);return Math.min(sh(fyStart(y),n),fyEnd(y))};
 function fyPre(){const y=fyOf(MAX);PRE.l12=['Last 12 months',sh(MAX,-11),MAX];PRE.ytd=['Year to date',fyStart(y),MAX];PRE.p1=[fyLbl(y-1),fyStart(y-1),fyEnd(y-1)];PRE.p2=[fyLbl(y-2),fyStart(y-2),fyEnd(y-2)];PRE.all=['All time',MIN,MAX]}
 const PRE={};fyPre();
-let S={pre:'ytd',a:PRE.ytd[1],b:MAX,inv:true,fam:true,cmp:true,tab:'ov',sel:'out',sub:'',split:false,cv:'m',yr:0,q:'',bm:MAX,ex:'mer',sq:'',xm:''},DT=null;
+let S={pre:'ytd',a:PRE.ytd[1],b:MAX,inv:false,fam:false,cmp:true,tab:'ov',sel:'out',sub:'',split:false,cv:'m',yr:0,q:'',bm:MAX,ex:'mer',sq:'',xm:''},DT=null;
 if(!document.documentElement.dataset.fin)document.documentElement.dataset.fin='dark';
 const acOK=r=>S.acc<0||(r[11]||0)==S.acc;
 const isC=r=>acOK(r)&&SP.includes(r[4])&&!(r[4]=='To review'&&r[5]>0)&&!(S.inv&&r[4]=='Investing/Saving')&&!(S.fam&&r[3]=='Family support');
@@ -219,7 +219,7 @@ if(t.dataset.ex){S.ex=t.dataset.ex;draw();return}
 if(t.dataset.bm){const k=sh(S.bm,+t.dataset.bm);if(k>=MIN&&k<=LIM())S.bm=k;draw();return}
 if(t.dataset.mer){DT={t:t.dataset.mer,cp:t.dataset.mer,mode:'c',a:rg()[0],b:rg()[1]};draw();return}
 if(t.dataset.pre){S.pre=t.dataset.pre;if(S.pre!='cus'){S.a=PRE[S.pre][1];S.b=PRE[S.pre][2]}}
-else if(t.dataset.sw)S[t.dataset.sw]=!S[t.dataset.sw];
+else if(t.dataset.sw){S[t.dataset.sw]=!S[t.dataset.sw];if(t.dataset.sw=='inv'||t.dataset.sw=='fam')saveFilt()}
 else if(t.dataset.tab){S.tab=t.dataset.tab;if(S.tab=='inf'){S.sel='inf';S.split=true;S.sub='';S.q=''}}
 else if(t.dataset.sel){const id=t.dataset.sel;if(S.sel==id&&id!='net'){S.split=!S.split;S.sub=''}else{S.sel=id;S.split=id!='net';S.sub=''}S.q=''}
 else if(t.dataset.cv)S.cv=t.dataset.cv;
@@ -239,6 +239,8 @@ let INV=[],INVF=null,RL={},OV={},RD={},CC={},BG={},BM={},FX={},FXY={},FXT={},FXC
 try{const j=JSON.parse(localStorage.getItem(SK)||'{}');RL=j.rl||{};OV=j.ov||{};RD=j.rd||{};CC=j.cc||{};BG=j.bg||{};BM=j.bm||{};FX=j.fx||{};FXY=j.fxy||{};FXT=j.fxt||{};FXC=j.fxc||{};if(Array.isArray(j.inv))INV=j.inv}catch(e){}
 const DR={};
 function applyRules(){Object.keys(CC).forEach(c=>{CG[c]=CC[c]});D.forEach(r=>{const c=OV[tk(r)]||(r[12]?null:(RD[dk(r)]||RL[rk(r)]||DR[rk(r)]));if(c&&CG[c]){r[3]=c;r[4]=CG[c]}else{r[3]=r[7];r[4]=r[8]}})}
+function saveFilt(){try{localStorage.setItem('fin_filt',JSON.stringify({inv:!!S.inv,fam:!!S.fam}))}catch(e){}}
+try{const ft=JSON.parse(localStorage.getItem('fin_filt')||'null');if(ft){S.inv=!!ft.inv;S.fam=!!ft.fam}}catch(e){}
 function persist(){try{nwSnap()}catch(e){}const j={rl:RL,ov:OV,rd:RD,cc:CC,bg:BG,bm:BM,fx:FX,fxy:FXY,fxt:FXT,fxc:FXC,imp:IMP,acc:ACC,inv:INV,dm:DM,bs:BSX,ex:EXT};try{localStorage.setItem(SK,JSON.stringify(j))}catch(e){}if(DBR)DBR.set(j).catch(()=>{})}
 function openPk(i){PK={i,scope:'desc'};renderPk()}
 function renderPk(){const el=$('#pk');if(!PK){el.style.display='none';el.innerHTML='';return}const r=D[PK.i],by={};Object.keys(CG).forEach(c=>(by[CG[c]]=by[CG[c]]||[]).push(c));
@@ -1458,14 +1460,14 @@ const LK={busy:false,away:0};
 function lkHide(){const d=document.getElementById('lk');if(d)d.remove()}
 async function lkAuth(why){const B=capP('BiometricAuth');if(!B){lkHide();return false}if(LK.busy)return false;LK.busy=true;
  try{await B.authenticate({reason:trT(why||'Use your fingerprint, face or phone PIN to open the app.'),cancelTitle:trT('Cancel'),allowDeviceCredential:true,androidTitle:'SpendPattern'});LK.busy=false;return true}
- catch(e){LK.busy=false;const c=String(e&&e.code||'');if(/NotAvailable|NotEnrolled|noDevice|passcodeNotSet|notSet/i.test(c)){try{localStorage.removeItem('fin_lock')}catch(x){}lkHide()}return false}}
+ catch(e){LK.busy=false;const c=String(e&&e.code||'');LK.err=c+' '+String(e&&e.message||'').slice(0,70);if(/NotAvailable|NotEnrolled|noDevice|passcodeNotSet|notSet/i.test(c)){try{localStorage.removeItem('fin_lock')}catch(x){}lkHide()}return false}}
 function lkShow(){if(document.getElementById('lk'))return;const d=document.createElement('div');d.id='lk';d.style.cssText='position:fixed;inset:0;z-index:200;background:#000;color:#e9edf3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;font:16px system-ui,sans-serif';
  d.innerHTML='<div style="font-size:24px;font-weight:700">SpendPattern</div><div style="color:#8b95a5;max-width:290px;line-height:1.45">'+esc(trT('Use your fingerprint, face or phone PIN to open the app.'))+'</div><button id="lkb" class="chip on" style="padding:12px 28px;font-size:16px">'+esc(trT('Unlock'))+'</button>';
  document.body.appendChild(d);document.getElementById('lkb').onclick=async()=>{if(await lkAuth())lkHide()};lkAuth().then(ok=>{if(ok)lkHide()})}
 async function toggleLock(){const B=capP('BiometricAuth');if(!B){toast('App lock is not available here.');return}
  try{if(lockOn()){if(await lkAuth('Unlock to turn off app lock')){localStorage.removeItem('fin_lock');toast('App lock off.')}}
   else{const c=await B.checkBiometry();if(!c.deviceIsSecure&&!c.isAvailable){toast('Set up a screen lock (PIN, pattern or fingerprint) on your phone first.');return}
-   if(await lkAuth('Unlock to turn on app lock')){localStorage.setItem('fin_lock','1');toast('App lock on.')}}}catch(e){}
+   if(await lkAuth('Unlock to turn on app lock')){localStorage.setItem('fin_lock','1');toast('App lock on.')}else if(LK.err&&!/userCancel|cancel/i.test(LK.err))toast('App lock: '+LK.err)}}catch(e){toast('App lock error: '+String(e&&(e.message||e.code)||e).slice(0,90))}
  draw()}
 function nativeBack(){if(document.getElementById('lk'))return;if(MENU){MENU=false;draw();return}
  for(const q of ['#pk','#sh']){const el=document.querySelector(q);if(el&&el.style.display&&el.style.display!='none'){const b=[...el.querySelectorAll('button')].find(x=>/✕/.test(x.textContent)||x.classList.contains('tskip'));if(b){b.click();return}}}
