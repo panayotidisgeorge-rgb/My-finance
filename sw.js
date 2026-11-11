@@ -1,5 +1,5 @@
-/* My Finance service worker: app shell is cached so the app opens offline. Version b195a528ed */
-const V='fin-b195a528ed';
+/* My Finance service worker: app shell is cached so the app opens offline. Version b33652173d */
+const V='fin-b33652173d';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable.png','./apple-touch-icon.png','./favicon-32.png'];
 const XL='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 self.addEventListener('install',e=>{e.waitUntil((async()=>{const c=await caches.open(V);await c.addAll(CORE.map(u=>new Request(u,{cache:'reload'})));try{await c.add(new Request(XL,{mode:'no-cors'}))}catch(x){}self.skipWaiting()})())});
