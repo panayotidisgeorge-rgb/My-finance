@@ -8,6 +8,8 @@
     "@capacitor/android": "latest",
     "@capacitor/app": "latest",
     "@capacitor/cli": "latest",
-    "@capacitor/core": "latest"
+    "@capacitor/core": "latest",
+    "@capgo/native-purchases": "latest",
+    "@capacitor-community/in-app-review": "latest"
   }
 }
