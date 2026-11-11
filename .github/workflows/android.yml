@@ -8,6 +8,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.UPLOAD_KEYSTORE_B64 != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -62,3 +64,30 @@ jobs:
           cp android-app/android/app/build/outputs/apk/debug/app-debug.apk spendpattern.apk
           gh release delete latest-test --yes --cleanup-tag || true
           gh release create latest-test spendpattern.apk --prerelease --title "Latest test build" --notes "Test build of SpendPattern for Android. Built from commit ${GITHUB_SHA::7} on $(date -u +%Y-%m-%d\ %H:%M) UTC."
+
+      - name: Build signed Play release (AAB) with the upload key
+        if: ${{ env.HAS_KEY == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KS_B64: ${{ secrets.UPLOAD_KEYSTORE_B64 }}
+          KS_PW: ${{ secrets.UPLOAD_STORE_PASSWORD }}
+          RUN_NO: ${{ github.run_number }}
+        run: |
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          cd android-app/android
+          python3 - <<'PY'
+          import re,os
+          p='app/build.gradle'
+          s=open(p).read()
+          s=re.sub(r'versionCode \d+','versionCode '+os.environ['RUN_NO'],s,1)
+          open(p,'w').write(s)
+          PY
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/upload.jks" \
+            -Pandroid.injected.signing.store.password="$KS_PW" \
+            -Pandroid.injected.signing.key.alias=upload \
+            -Pandroid.injected.signing.key.password="$KS_PW"
+          cd ../..
+          cp android-app/android/app/build/outputs/bundle/release/app-release.aab spendpattern.aab
+          gh release delete latest-release --yes --cleanup-tag || true
+          gh release create latest-release spendpattern.aab --prerelease --title "Latest Play release build" --notes "Signed AAB for Google Play upload. Version code ${RUN_NO}, commit ${GITHUB_SHA::7}."
