@@ -4,9 +4,10 @@
   "private": true,
   "description": "Android wrapper (Capacitor) for SpendPattern. The app itself is the web app in the repository root.",
   "dependencies": {
-    "@capacitor/android": "^7.0.0",
-    "@capacitor/app": "^7.0.0",
-    "@capacitor/cli": "^7.0.0",
-    "@capacitor/core": "^7.0.0"
+    "@aparajita/capacitor-biometric-auth": "latest",
+    "@capacitor/android": "latest",
+    "@capacitor/app": "latest",
+    "@capacitor/cli": "latest",
+    "@capacitor/core": "latest"
   }
 }
