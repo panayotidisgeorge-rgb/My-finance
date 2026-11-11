@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   push:
     paths: ['android-app/**', 'index.html', '.github/workflows/android.yml']
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,10 +21,32 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
-      - name: Build debug APK (installable on a phone for testing)
+      - name: Sign test builds with the fixed test key (so updates install over old versions)
+        working-directory: android-app
+        run: |
+          python3 - <<'PY'
+          p='android/app/build.gradle'
+          s=open(p).read()
+          sig="""
+              signingConfigs {
+                  debug {
+                      storeFile file('../../test.keystore')
+                      storePassword 'spendtest'
+                      keyAlias 'spendtest'
+                      keyPassword 'spendtest'
+                  }
+              }
+          """
+          s=s.replace("android {","android {"+sig,1)
+          open(p,'w').write(s)
+          PY
+      - name: Build test APK
         working-directory: android-app/android
         run: ./gradlew assembleDebug
-      - uses: actions/upload-artifact@v4
-        with:
-          name: spendpattern-debug-apk
-          path: android-app/android/app/build/outputs/apk/debug/*.apk
+      - name: Publish to the fixed download link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android-app/android/app/build/outputs/apk/debug/app-debug.apk spendpattern.apk
+          gh release delete latest-test --yes --cleanup-tag || true
+          gh release create latest-test spendpattern.apk --prerelease --title "Latest test build" --notes "Test build of SpendPattern for Android. Built from commit ${GITHUB_SHA::7} on $(date -u +%Y-%m-%d\ %H:%M) UTC."
