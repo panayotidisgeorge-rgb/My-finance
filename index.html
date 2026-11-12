@@ -1471,14 +1471,23 @@ applyRules();
 const capP=n=>{const C=window.Capacitor;if(!C)return null;if(n=='BiometricAuth'){if(C.Plugins&&C.Plugins.BiometricAuth)return C.Plugins.BiometricAuth;try{const N=C.registerPlugin('BiometricAuthNative');return{checkBiometry:()=>N.checkBiometry(),authenticate:o=>N.internalAuthenticate(o)}}catch(e){}if(C.nativePromise)return{checkBiometry:()=>C.nativePromise('BiometricAuthNative','checkBiometry',{}),authenticate:o=>C.nativePromise('BiometricAuthNative','internalAuthenticate',o)};return null}return(C.Plugins&&C.Plugins[n])||(C.registerPlugin?C.registerPlugin(n):null)};
 const isNative=()=>!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
 const lockOn=()=>{try{return localStorage.getItem('fin_lock')=='1'}catch(e){return false}};
-const LK={busy:false,away:0};
+const LK={busy:false,away:0,gen:0,t:0,last:0};
 function lkHide(){const d=document.getElementById('lk');if(d)d.remove()}
-async function lkAuth(why){const B=capP('BiometricAuth');if(!B){lkHide();return false}if(LK.busy)return false;LK.busy=true;
- try{await B.authenticate({reason:trT(why||'Use your fingerprint, face or phone PIN to open the app.'),cancelTitle:trT('Cancel'),allowDeviceCredential:true,androidTitle:'SpendPattern'});LK.busy=false;return true}
- catch(e){LK.busy=false;const c=String(e&&e.code||'');LK.err=c+' '+String(e&&e.message||'').slice(0,70);if(/NotAvailable|NotEnrolled|noDevice|passcodeNotSet|notSet/i.test(c)){try{localStorage.removeItem('fin_lock')}catch(x){}lkHide()}return false}}
-function lkShow(){if(document.getElementById('lk'))return;const d=document.createElement('div');d.id='lk';d.style.cssText='position:fixed;inset:0;z-index:200;background:#000;color:#e9edf3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;font:16px system-ui,sans-serif';
+async function lkAuth(why,force){const B=capP('BiometricAuth');if(!B){lkHide();return false}
+ if(LK.busy&&!force&&Date.now()-LK.t<60000)return false;
+ LK.busy=true;LK.t=Date.now();const g=++LK.gen;
+ try{await Promise.race([B.authenticate({reason:trT(why||'Use your fingerprint, face or phone PIN to open the app.'),cancelTitle:trT('Cancel'),allowDeviceCredential:true,androidTitle:'SpendPattern'}),new Promise((_,j)=>setTimeout(()=>j({code:'timeout'}),60000))]);if(g==LK.gen)LK.busy=false;return true}
+ catch(e){if(g==LK.gen)LK.busy=false;const c=String(e&&e.code||'');LK.err=c+' '+String(e&&e.message||'').slice(0,70);LK.code=c;if(/NotAvailable|NotEnrolled|noDevice|passcodeNotSet|notSet/i.test(c)){try{localStorage.removeItem('fin_lock')}catch(x){}lkHide()}return false}}
+/* Show the lock screen and ask for the fingerprint. After the phone was asleep the system may refuse the very first prompt, so wait a moment, force a fresh attempt and retry once. */
+function lkTry(delay){setTimeout(async()=>{if(!document.getElementById('lk'))return;let ok=await lkAuth(null,true);if(!ok&&document.getElementById('lk')&&lockOn()&&!/userCancel|userFallback|NotAvailable|NotEnrolled|noDevice|passcodeNotSet|notSet/i.test(LK.code||'')){await new Promise(r=>setTimeout(r,900));if(document.getElementById('lk'))ok=await lkAuth(null,true)}if(ok)lkHide()},delay||0)}
+function lkShow(delay){if(document.getElementById('lk')){lkTry(delay);return}const d=document.createElement('div');d.id='lk';d.style.cssText='position:fixed;inset:0;z-index:200;background:#000;color:#e9edf3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;font:16px system-ui,sans-serif';
  d.innerHTML='<div style="font-size:24px;font-weight:700">SpendPattern</div><div style="color:#8b95a5;max-width:290px;line-height:1.45">'+esc(trT('Use your fingerprint, face or phone PIN to open the app.'))+'</div><button id="lkb" class="chip on" style="padding:12px 28px;font-size:16px">'+esc(trT('Unlock'))+'</button>';
- document.body.appendChild(d);document.getElementById('lkb').onclick=async()=>{if(await lkAuth())lkHide()};lkAuth().then(ok=>{if(ok)lkHide()})}
+ document.body.appendChild(d);document.getElementById('lkb').onclick=async()=>{if(await lkAuth(null,true))lkHide()};lkTry(delay)}
+/* App went to the background / came back (Android screen off, other app, recents). */
+function lkAway(){if(!LK.away||Date.now()-LK.away>1500||!document.getElementById('lk'))LK.away=Date.now();LK.busy=false}
+function lkBack(){if(Date.now()-LK.last<700)return;LK.last=Date.now();if(!lockOn()){return}
+ if(document.getElementById('lk')){lkShow(500);return}
+ if(LK.away&&Date.now()-LK.away>30000)lkShow(500)}
 async function toggleLock(){const B=capP('BiometricAuth');if(!B){toast('App lock is not available here. [r5 cap='+!!window.Capacitor+' reg='+typeof(window.Capacitor&&Capacitor.registerPlugin)+' np='+typeof(window.Capacitor&&Capacitor.nativePromise)+']');return}
  try{if(lockOn()){if(await lkAuth('Unlock to turn off app lock')){localStorage.removeItem('fin_lock');toast('App lock off.')}}
   else{const c=await B.checkBiometry();if(!c.deviceIsSecure&&!c.isAvailable){toast('Set up a screen lock (PIN, pattern or fingerprint) on your phone first.');return}
@@ -1489,8 +1498,9 @@ function nativeBack(){if(document.getElementById('lk'))return;if(document.getEle
  for(const q of ['#pk','#sh']){const el=document.querySelector(q);if(el&&el.style.display&&el.style.display!='none'){const b=[...el.querySelectorAll('button')].find(x=>/✕/.test(x.textContent)||x.classList.contains('tskip'));if(b){b.click();return}}}
  if(S.tab!='ov'){S.tab='ov';draw();return}
  const A=capP('App');if(A&&A.exitApp)A.exitApp()}
-if(isNative()){const A=capP('App');if(A&&A.addListener){A.addListener('backButton',nativeBack);A.addListener('appStateChange',s=>{if(!s.isActive)LK.away=Date.now();else if(lockOn()&&LK.away&&Date.now()-LK.away>30000)lkShow()})}
- if(lockOn())lkShow()}
+if(isNative()){const A=capP('App');if(A&&A.addListener){A.addListener('backButton',nativeBack);A.addListener('appStateChange',s=>{if(!s.isActive)lkAway();else lkBack()})}
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)lkAway();else lkBack()});
+ if(lockOn())lkShow(300)}
 
 /* ===== Subscription (Google Play Billing) and rating prompt: only active inside the Android app ===== */
 const SUB={id:'spendpattern_premium',m:'monthly',y:'annual'};
