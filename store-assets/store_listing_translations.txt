@@ -1,0 +1,298 @@
+=== LANGUAGE: de-DE ===
+
+Title:
+SpendPattern
+
+Short description:
+Verstehen, wohin Ihr Geld fließt: importieren, vergleichen, Budget einhalten!
+
+Full description:
+Verstehen Sie mit SpendPattern, wohin Ihr Geld fließt.
+
+Ideal für alle, die einen einfachen Überblick über ihre Finanzen wollen – oder wirklich tief in die Details eintauchen möchten!
+
+SpendPattern verwandelt Ihre Kontoauszüge in klare, nützliche Einblicke. Importieren Sie Ihre Transaktionen und entdecken Sie, wie Sie Ihr Geld ausgeben, wohin es fließt und bei welchen Ausgaben Sie sparen könnten.
+
+✔ Keine Registrierung nötig
+✔ Keine Bankverbindung nötig
+✔ Keine Finanzdaten auf unseren Servern
+✔ Analysieren Sie Ihre eigenen Dateien
+✔ Ihre Finanzhistorie bleibt auf Ihrem Gerät
+
+Importieren Sie Ihre Konto- und/oder Kreditkartenauszüge (CSV, Excel, PDF und weitere gängige Formate) und/oder erfassen Sie Transaktionen von Hand. SpendPattern erkennt die Spalten, ordnet jede Transaktion einer Kategorie zu und erstellt übersichtliche Diagramme, die Sie mit einem Tippen erkunden können.
+
+DAS KÖNNEN SIE TUN
+• Gesamteinnahmen, -ausgaben und Nettoersparnis für jeden Zeitraum sehen
+• Jahr für Jahr vergleichen sowie jeden Monat mit demselben Monat des Vorjahres – mit Änderung in Betrag und Prozent
+• Ausgaben nach Kategorien im Ringdiagramm erkunden; ein Tipp auf ein Segment zeigt die zugehörigen Transaktionen
+• Monatsbudgets pro Kategorie festlegen und gewarnt werden, bevor Sie sie überschreiten
+• Fixkosten und Abos im Blick behalten
+• Sparen, Investitionen und Vermögen über die Zeit verfolgen
+• Jede Transaktion neu kategorisieren; die App merkt sich Ihre Wahl für denselben Händler
+• Mehrere Konten und Währungen verwalten
+• Investitionen oder Familienunterstützung ausblenden, damit nur die echten Lebenshaltungskosten zählen
+• Kosten von Hand hinzufügen, wenn es keinen Auszug gibt
+
+PRIVATSPHÄRE VON GRUND AUF
+• Ihre Daten bleiben auf Ihrem Handy. Kein Konto, keine Cloud-Synchronisierung und keine Werbung
+• Optionale App-Sperre mit Fingerabdruck, Gesichtserkennung oder PIN Ihres Handys
+• Sichern und wiederherstellen Sie Ihre Einstellungen, wann immer Sie möchten
+
+FÜR DEN ALLTAG GEMACHT
+• Dunkles und helles Design
+• Verfügbar auf Englisch, Deutsch, Französisch, Italienisch, Spanisch, Portugiesisch und Griechisch
+• Starten Sie mit Demodaten, um jeden Bildschirm auszuprobieren, und importieren Sie dann mit einem Tippen Ihre eigenen Daten
+
+SpendPattern ist ein Informationswerkzeug. Es bietet keine Finanz-, Steuer- oder Rechtsberatung, und automatische Kategorien können falsch sein – bitte prüfen Sie wichtige Zahlen selbst.
+
+Fragen oder Ideen? Schreiben Sie an infospendpattern@gmail.com
+
+
+=== LANGUAGE: fr-FR ===
+
+Title:
+SpendPattern
+
+Short description:
+Comprenez où va votre argent : importez, comparez, respectez votre budget !
+
+Full description:
+Comprenez où va votre argent avec SpendPattern.
+
+Idéal pour ceux qui veulent une vue simple de leurs finances, comme pour ceux qui souhaitent vraiment entrer dans les détails !
+
+SpendPattern transforme vos relevés bancaires en informations financières claires et utiles. Importez vos transactions et découvrez comment vous dépensez, où va votre argent et quelles dépenses vous pourriez réduire.
+
+✔ Aucune inscription requise
+✔ Aucune connexion bancaire requise
+✔ Aucune donnée financière envoyée à nos serveurs
+✔ Analysez vos propres fichiers
+✔ Votre historique financier reste sur votre appareil
+
+Importez vos relevés bancaires et/ou de carte (CSV, Excel, PDF et autres formats courants) et/ou ajoutez vos transactions manuellement. SpendPattern reconnaît les colonnes, classe chaque transaction par catégorie et crée des graphiques clairs que vous explorez d'un simple toucher.
+
+CE QUE VOUS POUVEZ FAIRE
+• Voir le total des entrées, des sorties et l'épargne nette pour n'importe quelle période
+• Comparer d'une année à l'autre et chaque mois au même mois de l'année précédente, avec l'écart en montant et en pourcentage
+• Explorer vos dépenses par catégorie dans un graphique en anneau ; touchez une part pour voir les transactions correspondantes
+• Définir des budgets mensuels par catégorie et recevoir des alertes avant de les dépasser
+• Suivre vos charges fixes et vos abonnements
+• Suivre l'épargne, les investissements et le patrimoine dans le temps
+• Recatégoriser n'importe quelle transaction ; l'application retient votre choix pour le même commerçant
+• Gérer plusieurs comptes et devises
+• Exclure les investissements ou le soutien familial pour ne compter que les vrais frais de vie
+• Ajouter des dépenses à la main quand il n'y a pas de relevé
+
+CONFIDENTIEL PAR CONCEPTION
+• Vos données restent sur votre téléphone. Pas de compte, pas de synchronisation cloud et pas de publicité
+• Verrouillage de l'application facultatif par empreinte digitale, visage ou code PIN de votre téléphone
+• Sauvegardez et restaurez vos réglages quand vous le souhaitez
+
+CONÇU POUR LE QUOTIDIEN
+• Thèmes sombre et clair
+• Disponible en anglais, allemand, français, italien, espagnol, portugais et grec
+• Commencez avec des données de démonstration pour essayer chaque écran, puis importez les vôtres d'un seul toucher
+
+SpendPattern est un outil d'information. Il ne fournit aucun conseil financier, fiscal ou juridique, et les catégories automatiques peuvent être erronées ; veuillez vérifier vous-même les chiffres importants.
+
+Des questions ou des idées ? Écrivez à infospendpattern@gmail.com
+
+
+=== LANGUAGE: it-IT ===
+
+Title:
+SpendPattern
+
+Short description:
+Scopri dove vanno i tuoi soldi: importa, confronta, rispetta il budget!
+
+Full description:
+Scopri dove vanno i tuoi soldi con SpendPattern.
+
+Ideale per chi vuole una visione semplice delle proprie finanze e per chi vuole davvero scendere nei dettagli!
+
+SpendPattern trasforma gli estratti conto in informazioni finanziarie chiare e utili. Importa le tue transazioni e scopri come spendi, dove vanno i tuoi soldi e quali spese potresti ridurre.
+
+✔ Nessuna registrazione richiesta
+✔ Nessun collegamento alla banca richiesto
+✔ Nessun dato finanziario caricato sui nostri server
+✔ Analizza i tuoi file
+✔ La tua storia finanziaria resta sul tuo dispositivo
+
+Importa gli estratti conto della banca e/o della carta (CSV, Excel, PDF e altri formati comuni) e/o aggiungi le transazioni a mano. SpendPattern riconosce le colonne, ordina ogni transazione in categorie e crea grafici chiari che puoi esplorare con un tocco.
+
+COSA PUOI FARE
+• Vedere entrate totali, uscite totali e risparmio netto per qualsiasi periodo
+• Confrontare anno su anno e ogni mese con lo stesso mese dell'anno precedente, con la variazione in importo e in percentuale
+• Esplorare le spese per categoria in un grafico ad anello; tocca una fetta per vedere le transazioni
+• Impostare budget mensili per categoria e ricevere avvisi prima di superarli
+• Tenere traccia di costi fissi e abbonamenti
+• Seguire risparmi, investimenti e patrimonio nel tempo
+• Ricategorizzare qualsiasi transazione; l'app ricorda la tua scelta per lo stesso esercente
+• Gestire più conti e valute
+• Escludere investimenti o sostegno alla famiglia, così contano solo i veri costi di vita
+• Aggiungere costi a mano quando non c'è un estratto conto
+
+PRIVACY PER PROGETTO
+• I tuoi dati restano sul tuo telefono. Nessun account, nessuna sincronizzazione cloud e nessuna pubblicità
+• Blocco app facoltativo con impronta digitale, volto o PIN del telefono
+• Salva e ripristina le tue impostazioni quando vuoi
+
+PENSATA PER L'USO QUOTIDIANO
+• Temi scuro e chiaro
+• Disponibile in inglese, tedesco, francese, italiano, spagnolo, portoghese e greco
+• Inizia con dati dimostrativi per provare ogni schermata, poi importa i tuoi con un tocco
+
+SpendPattern è uno strumento informativo. Non fornisce consulenza finanziaria, fiscale o legale e le categorie automatiche possono essere sbagliate: controlla tu stesso le cifre importanti.
+
+Domande o idee? Scrivi a infospendpattern@gmail.com
+
+
+=== LANGUAGE: es-ES ===
+
+Title:
+SpendPattern
+
+Short description:
+Entiende adónde va tu dinero: importa, compara y cumple tu presupuesto.
+
+Full description:
+Entiende adónde va tu dinero con SpendPattern.
+
+¡Ideal para quienes quieren una visión sencilla de sus finanzas y para quienes quieren profundizar de verdad en los detalles!
+
+SpendPattern convierte tus extractos bancarios en información financiera clara y útil. Importa tus movimientos y descubre cómo gastas, adónde va tu dinero y qué gastos podrías reducir.
+
+✔ Sin registro
+✔ Sin conexión bancaria
+✔ Ningún dato financiero se sube a nuestros servidores
+✔ Analiza tus propios archivos
+✔ Tu historial financiero se queda en tu dispositivo
+
+Importa tus extractos bancarios y/o de tarjeta (CSV, Excel, PDF y otros formatos habituales) y/o añade movimientos a mano. SpendPattern reconoce las columnas, clasifica cada movimiento en categorías y crea gráficos claros que exploras con un toque.
+
+QUÉ PUEDES HACER
+• Ver ingresos totales, gastos totales y ahorro neto de cualquier periodo
+• Comparar año a año y cada mes con el mismo mes del año anterior, con la variación en importe y porcentaje
+• Explorar los gastos por categoría en un gráfico de anillo; toca una porción para ver los movimientos
+• Fijar presupuestos mensuales por categoría y recibir avisos antes de pasarte
+• Controlar costes fijos y suscripciones
+• Seguir el ahorro, las inversiones y el patrimonio a lo largo del tiempo
+• Recategorizar cualquier movimiento; la app recuerda tu elección para el mismo comercio
+• Gestionar varias cuentas y divisas
+• Excluir inversiones o ayuda familiar para que solo cuenten los gastos de vida reales
+• Añadir gastos a mano cuando no hay extracto
+
+PRIVADA POR DISEÑO
+• Tus datos se quedan en tu teléfono. Sin cuenta, sin sincronización en la nube y sin anuncios
+• Bloqueo de la app opcional con la huella, el rostro o el PIN de tu teléfono
+• Haz copias de seguridad y restaura tus ajustes cuando quieras
+
+PENSADA PARA EL DÍA A DÍA
+• Temas oscuro y claro
+• Disponible en inglés, alemán, francés, italiano, español, portugués y griego
+• Empieza con datos de demostración para probar cada pantalla y luego importa los tuyos con un toque
+
+SpendPattern es una herramienta informativa. No ofrece asesoramiento financiero, fiscal ni jurídico, y las categorías automáticas pueden ser erróneas, así que comprueba tú mismo las cifras importantes.
+
+¿Preguntas o ideas? Escribe a infospendpattern@gmail.com
+
+
+=== LANGUAGE: pt-PT ===
+
+Title:
+SpendPattern
+
+Short description:
+Perceba para onde vai o seu dinheiro: importe, compare e cumpra o orçamento!
+
+Full description:
+Perceba para onde vai o seu dinheiro com o SpendPattern.
+
+Ideal para quem quer uma visão simples das suas finanças e para quem quer mesmo aprofundar os detalhes!
+
+O SpendPattern transforma os seus extratos bancários em informação financeira clara e útil. Importe os seus movimentos e descubra como gasta, para onde vai o seu dinheiro e que despesas poderia reduzir.
+
+✔ Sem registo
+✔ Sem ligação ao banco
+✔ Nenhum dado financeiro é enviado para os nossos servidores
+✔ Analise os seus próprios ficheiros
+✔ O seu histórico financeiro fica no seu dispositivo
+
+Importe os extratos do banco e/ou do cartão (CSV, Excel, PDF e outros formatos comuns) e/ou adicione movimentos manualmente. O SpendPattern reconhece as colunas, organiza cada movimento em categorias e cria gráficos claros que explora com um toque.
+
+O QUE PODE FAZER
+• Ver entradas totais, saídas totais e poupança líquida de qualquer período
+• Comparar ano a ano e cada mês com o mesmo mês do ano anterior, com a variação em valor e percentagem
+• Explorar as despesas por categoria num gráfico em anel; toque numa fatia para ver os movimentos
+• Definir orçamentos mensais por categoria e receber alertas antes de os ultrapassar
+• Acompanhar custos fixos e subscrições
+• Seguir poupança, investimentos e património ao longo do tempo
+• Recategorizar qualquer movimento; a app lembra-se da sua escolha para o mesmo comerciante
+• Gerir várias contas e moedas
+• Excluir investimentos ou apoio familiar para que só contem os custos de vida reais
+• Adicionar custos manualmente quando não há extrato
+
+PRIVADO POR DESIGN
+• Os seus dados ficam no seu telemóvel. Sem conta, sem sincronização na nuvem e sem anúncios
+• Bloqueio da app opcional com a impressão digital, o rosto ou o PIN do telemóvel
+• Guarde e restaure as suas definições quando quiser
+
+FEITO PARA O DIA A DIA
+• Temas escuro e claro
+• Disponível em inglês, alemão, francês, italiano, espanhol, português e grego
+• Comece com dados de demonstração para experimentar cada ecrã e depois importe os seus com um toque
+
+O SpendPattern é uma ferramenta informativa. Não presta aconselhamento financeiro, fiscal ou jurídico e as categorias automáticas podem estar erradas, por isso verifique você mesmo os valores importantes.
+
+Dúvidas ou ideias? Escreva para infospendpattern@gmail.com
+
+
+=== LANGUAGE: el-GR ===
+
+Title:
+SpendPattern
+
+Short description:
+Δείτε πού πάνε τα χρήματά σας: εισαγωγή, σύγκριση, τήρηση προϋπολογισμού!
+
+Full description:
+Δείτε πού πηγαίνουν τα χρήματά σας με το SpendPattern.
+
+Ιδανικό για όσους θέλουν μια απλή εικόνα των οικονομικών τους, αλλά και για όσους θέλουν να μπουν πραγματικά στις λεπτομέρειες!
+
+Το SpendPattern μετατρέπει τις κινήσεις του τραπεζικού σας λογαριασμού σε σαφείς, χρήσιμες οικονομικές πληροφορίες. Εισαγάγετε τις συναλλαγές σας και δείτε πώς ξοδεύετε, πού πάνε τα χρήματά σας και ποια έξοδα θα μπορούσατε να μειώσετε.
+
+✔ Χωρίς εγγραφή
+✔ Χωρίς σύνδεση με την τράπεζα
+✔ Κανένα οικονομικό δεδομένο δεν ανεβαίνει στους διακομιστές μας
+✔ Αναλύστε τα δικά σας αρχεία
+✔ Το οικονομικό σας ιστορικό μένει στη συσκευή σας
+
+Εισαγάγετε τις κινήσεις τράπεζας ή/και κάρτας (CSV, Excel, PDF και άλλες συνηθισμένες μορφές) ή/και προσθέστε συναλλαγές με το χέρι. Το SpendPattern αναγνωρίζει τις στήλες, ταξινομεί κάθε συναλλαγή σε κατηγορίες και δημιουργεί καθαρά γραφήματα που εξερευνάτε με ένα άγγιγμα.
+
+ΤΙ ΜΠΟΡΕΙΤΕ ΝΑ ΚΑΝΕΤΕ
+• Να δείτε συνολικά έσοδα, συνολικά έξοδα και καθαρές αποταμιεύσεις για οποιαδήποτε περίοδο
+• Να συγκρίνετε από έτος σε έτος και κάθε μήνα με τον ίδιο μήνα του προηγούμενου έτους, με τη μεταβολή σε ποσό και ποσοστό
+• Να εξερευνάτε τα έξοδα ανά κατηγορία σε δακτυλιοειδές γράφημα· αγγίξτε μια φέτα για να δείτε τις συναλλαγές
+• Να ορίζετε μηνιαίους προϋπολογισμούς ανά κατηγορία και να ειδοποιείστε πριν τους ξεπεράσετε
+• Να παρακολουθείτε πάγια έξοδα και συνδρομές
+• Να παρακολουθείτε αποταμιεύσεις, επενδύσεις και καθαρή περιουσία με την πάροδο του χρόνου
+• Να αλλάζετε την κατηγορία οποιασδήποτε συναλλαγής· η εφαρμογή θυμάται την επιλογή σας για τον ίδιο έμπορο
+• Να διαχειρίζεστε πολλούς λογαριασμούς και νομίσματα
+• Να εξαιρείτε επενδύσεις ή οικογενειακή στήριξη, ώστε να μετράνε μόνο τα πραγματικά έξοδα διαβίωσης
+• Να προσθέτετε έξοδα με το χέρι όταν δεν υπάρχει κατάσταση κινήσεων
+
+ΙΔΙΩΤΙΚΟ ΑΠΟ ΤΟΝ ΣΧΕΔΙΑΣΜΟ
+• Τα δεδομένα σας μένουν στο κινητό σας. Χωρίς λογαριασμό, χωρίς συγχρονισμό στο cloud και χωρίς διαφημίσεις
+• Προαιρετικό κλείδωμα εφαρμογής με δακτυλικό αποτύπωμα, πρόσωπο ή PIN του κινητού σας
+• Δημιουργήστε αντίγραφο ασφαλείας και επαναφέρετε τις ρυθμίσεις σας όποτε θέλετε
+
+ΦΤΙΑΓΜΕΝΟ ΓΙΑ ΤΗΝ ΚΑΘΗΜΕΡΙΝΗ ΧΡΗΣΗ
+• Σκούρο και φωτεινό θέμα
+• Διαθέσιμο σε αγγλικά, γερμανικά, γαλλικά, ιταλικά, ισπανικά, πορτογαλικά και ελληνικά
+• Ξεκινήστε με δοκιμαστικά δεδομένα για να δείτε κάθε οθόνη και μετά εισαγάγετε τα δικά σας με ένα άγγιγμα
+
+Το SpendPattern είναι ένα ενημερωτικό εργαλείο. Δεν παρέχει οικονομική, φορολογική ή νομική συμβουλή και οι αυτόματες κατηγορίες μπορεί να είναι λανθασμένες, γι' αυτό ελέγξτε μόνοι σας τα σημαντικά ποσά.
+
+Ερωτήσεις ή ιδέες; Γράψτε στο infospendpattern@gmail.com
