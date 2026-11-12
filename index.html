@@ -1557,7 +1557,7 @@ async function subRestore(){const P=capP('NativePurchases');if(!P||SB.busy)retur
  try{if(P.restorePurchases)await P.restorePurchases()}catch(e){}
  const ok=await subCheck();SB.busy=false;if(ok){pwHide();toast('Subscription restored.');return}
  if(ok===false)SB.err='No active subscription found for this Google account.';pwRender()}
-async function subGate(){if(!isNative()||subTest())return;const c=subCache(),fresh=c&&Date.now()-c.t<7*864e5;if(!fresh)pwShow();
+async function subGate(){if(!isNative()||subTest())return;const c=subCache(),fresh=c&&Date.now()-c.t<3*864e5;if(!fresh)pwShow();
  const ok=await subCheck();if(ok===true){pwHide();return}if(ok===false){pwShow();return}if(!fresh)pwShow()}
 async function subMenu(){if(subTest()){pwShow(true);return}const P=capP('NativePurchases');
  try{if(P&&P.manageSubscriptions){await P.manageSubscriptions();return}}catch(e){}
