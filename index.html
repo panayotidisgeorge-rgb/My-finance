@@ -1486,8 +1486,8 @@ function lkShow(delay){if(document.getElementById('lk')){lkTry(delay);return}con
 /* App went to the background / came back (Android screen off, other app, recents). */
 function lkAway(){if(!LK.away||Date.now()-LK.away>1500||!document.getElementById('lk'))LK.away=Date.now();LK.busy=false}
 function lkBack(){if(Date.now()-LK.last<700)return;LK.last=Date.now();if(!lockOn()){return}
- if(document.getElementById('lk')){lkShow(500);return}
- if(LK.away&&Date.now()-LK.away>30000)lkShow(500)}
+ if(document.getElementById('lk')){lkShow(1200);return}
+ if(LK.away&&Date.now()-LK.away>30000)lkShow(1200)}
 async function toggleLock(){const B=capP('BiometricAuth');if(!B){toast('App lock is not available here. [r5 cap='+!!window.Capacitor+' reg='+typeof(window.Capacitor&&Capacitor.registerPlugin)+' np='+typeof(window.Capacitor&&Capacitor.nativePromise)+']');return}
  try{if(lockOn()){if(await lkAuth('Unlock to turn off app lock')){localStorage.removeItem('fin_lock');toast('App lock off.')}}
   else{const c=await B.checkBiometry();if(!c.deviceIsSecure&&!c.isAvailable){toast('Set up a screen lock (PIN, pattern or fingerprint) on your phone first.');return}
