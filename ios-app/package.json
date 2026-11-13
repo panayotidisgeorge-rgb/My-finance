@@ -1,0 +1,15 @@
+{
+  "name": "spendpattern-ios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "iOS wrapper (Capacitor) for SpendPattern. The app itself is the web app in the repository root. Fully separate from android-app: nothing here is read by the Android build.",
+  "dependencies": {
+    "@aparajita/capacitor-biometric-auth": "latest",
+    "@capacitor/app": "latest",
+    "@capacitor/cli": "latest",
+    "@capacitor/core": "latest",
+    "@capacitor/ios": "latest",
+    "@capgo/native-purchases": "latest",
+    "@capacitor-community/in-app-review": "latest"
+  }
+}

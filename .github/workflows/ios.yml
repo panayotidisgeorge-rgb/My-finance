@@ -1,0 +1,81 @@
+name: iOS build
+# Separate from "Android build": own triggers, own folder (ios-app), own secrets. It never touches android-app or the Android workflow.
+# Step 1 (always): build an unsigned simulator app to prove the wrapper compiles.
+# Step 2 (only when the App Store Connect secrets exist): signed archive and upload to TestFlight.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-prep, main]
+    paths: ['ios-app/**', '.github/workflows/ios.yml']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      HAS_ASC: ${{ secrets.APPSTORE_KEY_P8_B64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Install and add iOS platform
+        working-directory: ios-app
+        run: |
+          bash build_web.sh
+          npm install
+          npx cap add ios
+          npx cap sync ios
+      - name: Plugin check (purchases, biometrics, review)
+        working-directory: ios-app
+        run: |
+          cat ios/App/App/capacitor.config.json || true
+          ls node_modules/@capgo/native-purchases/ios 2>/dev/null | head || true
+          ls node_modules/@aparajita/capacitor-biometric-auth/ios 2>/dev/null | head || true
+          ls node_modules/@capacitor-community/in-app-review/ios 2>/dev/null | head || true
+      - name: App icon, Face ID text, no export-compliance question, iPhone and iPad
+        working-directory: ios-app
+        run: |
+          set -e
+          icondir=$(find ios -type d -name "AppIcon.appiconset" | head -1)
+          echo "icon dir: $icondir"
+          ls "$icondir"
+          png=$(ls "$icondir"/*.png | head -1)
+          cp assets/icon-1024.png "$png"
+          plist=ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Add :NSFaceIDUsageDescription string SpendPattern uses Face ID to unlock the app on your phone." "$plist" || true
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$plist" || true
+          grep -rn "TARGETED_DEVICE_FAMILY" ios/App/App.xcodeproj/project.pbxproj | head -2
+      - name: Build for the simulator (unsigned check)
+        working-directory: ios-app/ios/App
+        run: |
+          if [ -d App.xcworkspace ]; then T="-workspace App.xcworkspace"; else T="-project App.xcodeproj"; fi
+          xcodebuild $T -scheme App -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build | tail -30
+      - name: Signed archive and TestFlight upload (needs App Store Connect secrets, not tested yet)
+        if: ${{ env.HAS_ASC == 'true' }}
+        working-directory: ios-app/ios/App
+        env:
+          KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          KEY_B64: ${{ secrets.APPSTORE_KEY_P8_B64 }}
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          RUN_NO: ${{ github.run_number }}
+        run: |
+          set -e
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "$KEY_B64" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8
+          if [ -d App.xcworkspace ]; then T="-workspace App.xcworkspace"; else T="-project App.xcodeproj"; fi
+          AUTH="-allowProvisioningUpdates -authenticationKeyPath $HOME/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8 -authenticationKeyID $KEY_ID -authenticationKeyIssuerID $ISSUER_ID"
+          xcodebuild $T -scheme App -configuration Release -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            DEVELOPMENT_TEAM=$TEAM_ID CODE_SIGN_STYLE=Automatic CURRENT_PROJECT_VERSION=$RUN_NO MARKETING_VERSION=1.0 $AUTH archive
+          cat > "$RUNNER_TEMP/export.plist" <<PL
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>destination</key><string>export</string>
+          </dict></plist>
+          PL
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" -exportPath "$RUNNER_TEMP/export" -exportOptionsPlist "$RUNNER_TEMP/export.plist" $AUTH
+          xcrun altool --upload-app --type ios --file "$RUNNER_TEMP"/export/*.ipa --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
