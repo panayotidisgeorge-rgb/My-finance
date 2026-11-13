@@ -11,7 +11,7 @@ permissions:
   contents: read
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     env:
       HAS_ASC: ${{ secrets.APPSTORE_KEY_P8_B64 != '' }}
     steps:
@@ -25,6 +25,8 @@ jobs:
           npm install
           npx cap add ios
           npx cap sync ios
+      - name: Show Xcode version
+        run: xcodebuild -version
       - name: Plugin check (purchases, biometrics, review)
         working-directory: ios-app
         run: |
