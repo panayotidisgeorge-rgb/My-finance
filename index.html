@@ -89,7 +89,7 @@ svg{width:100%;height:auto;display:block}
 .tx{cursor:pointer}.tx:active{background:var(--line)}#pk{position:fixed;inset:0;background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:40;display:none;align-items:flex-end}.sheet{background:radial-gradient(140% 85% at 50% -8%,color-mix(in srgb,var(--ac) 46%,transparent),transparent 75%) fixed,radial-gradient(110% 60% at 100% 100%,color-mix(in srgb,var(--ac2) 30%,transparent),transparent 70%) fixed,color-mix(in srgb,var(--card) 62%,transparent);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);border:1px solid color-mix(in srgb,var(--tx) 14%,transparent);border-radius:20px 20px 0 0;padding:16px 14px calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-width:640px;margin:0 auto;max-height:88vh;overflow:auto}.sheet h3{margin-top:12px}.sheet .row{margin:6px 0}
 nav button{font-size:10px;padding:6px 0;min-width:0;white-space:nowrap;letter-spacing:0}@media(min-width:400px){nav button{font-size:11px}}.icg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}.ibp{background:none;border:2px solid transparent;border-radius:14px;padding:3px;cursor:pointer;line-height:0}.ibp.on{border-color:var(--ac)}.ibp .ci{margin:0}
 #fab{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;border:0;background:var(--ac);color:#fff;font-size:26px;line-height:1;box-shadow:0 6px 18px rgba(0,0,0,.45);z-index:25;cursor:pointer;padding:0}#fab:active{transform:scale(.95)}
-#bell{position:relative;font-size:16px;padding:6px 10px;line-height:1}#bell svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}#bell b{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:var(--bad);color:#fff;font-size:10px;line-height:17px;text-align:center;padding:0 4px;font-weight:700}
+#bell{position:relative;font-size:16px;padding:6px 10px;line-height:1}#bell svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}#bell b{position:absolute;top:0;right:0;min-width:17px;height:17px;border-radius:9px;background:var(--bad);color:#fff;font-size:10px;line-height:17px;text-align:center;padding:0 4px;font-weight:700}
 @media (prefers-color-scheme:dark){:root{--pcs:dark}}@media (prefers-color-scheme:light){:root{--pcs:light}}
 .brand{display:inline-flex;align-items:center;gap:7px;font-size:.86em;white-space:nowrap}.brand img{width:30px;height:30px;display:block;flex:none}
 .ib3{background:linear-gradient(155deg,var(--c1),var(--c2))!important;border:0!important;color:#fff!important;border-radius:12px!important;width:38px;height:38px;padding:0!important;display:inline-grid;place-items:center;position:relative;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -3px 4px rgba(0,0,0,.28),0 3px 8px rgba(0,0,0,.4);cursor:pointer}.ib3 svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:block}.ib3:active{transform:translateY(1px);filter:brightness(.95)}#bell.ib3{padding:0!important}
@@ -1524,18 +1524,19 @@ async function subCheck(){const P=capP('NativePurchases');if(!P)return null;
  catch(e){SB.err=spErr(e);return null}}
 function pwHide(){const d=document.getElementById('pw');if(d)d.remove();SB.prev=false}
 function pwMoney(v,c){try{return new Intl.NumberFormat(undefined,{style:'currency',currency:c}).format(v)}catch(e){return(Math.round(v*100)/100)+' '+c}}
+function pwP(p){return p&&p.price>0?pwMoney(p.price,p.currencyCode||'CHF'):(p&&p.priceString||'')}
 function pwRender(){const d=document.getElementById('pw');if(!d)return;const P=SB.prods,t=trT;
  const feat=['Import any statement (CSV, Excel, PDF, other)','Compare months and years','Budgets, fixed costs and wealth','Private: your data stays on your phone'].map(x=>'<li><span class="pwk">✓</span>'+esc(t(x))+'</li>').join('');
  let plans='';
  if(P){const m=P.m,y=P.y,ok=m&&y&&m.price>0&&y.price>0&&y.price/m.price>3&&y.price/m.price<20;
-  const card=(k,p,lab,per,extra)=>p?'<button class="pwc'+(SB.sel==k?' on':'')+'" data-pws="'+k+'"><span class="pwr"></span><span class="pwt"><b>'+esc(t(lab))+'</b>'+(extra||'')+'</span><span class="pwp"><b>'+esc(p.priceString||'')+'</b><small>'+esc(t(per))+'</small></span></button>':'';
+  const card=(k,p,lab,per,extra)=>p?'<button class="pwc'+(SB.sel==k?' on':'')+'" data-pws="'+k+'"><span class="pwr"></span><span class="pwt"><b>'+esc(t(lab))+'</b>'+(extra||'')+'</span><span class="pwp"><b>'+esc(pwP(p))+'</b><small>'+esc(t(per))+'</small></span></button>':'';
   const eq=ok?'<small class="pwm">'+esc(pwMoney(y.price/12,y.currencyCode||'CHF'))+' '+esc(t('per month'))+'</small>':'';
   const sv=ok?'<i class="pwb">'+esc(EXT.cfg.lang=='en'?'Save':t('Save money'))+' '+Math.round(100*(1-y.price/(m.price*12)))+'%</i>':'';
   plans=card('y',y,'Yearly','per year',sv+eq)+card('m',m,'Monthly','per month','')}
  else plans=SB.err?'':'<div class="pwl"></div><div class="pwl"></div>';
  const p=P&&P[SB.sel],per=SB.sel=='y'?'per year':'per month';
  const cta=SB.busy?'…':t(SB.trial?'Start 4-day free trial':'Subscribe');
- const fine=p?(SB.trial?t('4 days free, then')+' ':t('Then')+' ')+esc(p.priceString||'')+' '+esc(t(per))+'. '+esc(t('Cancel anytime in Google Play.')):'';
+ const fine=p?(SB.trial?t('4 days free, then')+' ':t('Then')+' ')+esc(pwP(p))+' '+esc(t(per))+'. '+esc(t('Cancel anytime in Google Play.')):'';
  d.innerHTML='<div class="pwi">'+(SB.prev?'<button class="pwx" data-pwa="close" aria-label="Close">✕</button>':'')
  +'<div class="pwg">SpendPattern</div><h1>'+esc(t(trEnded()?'Your free trial has ended':'Unlock SpendPattern'))+'</h1><p class="pws">'+esc(t('Understand where your money goes.'))+'</p><ul>'+feat+'</ul>'
  +'<div class="pwp2">'+plans+'</div>'+(SB.err?'<div class="pwe">'+esc(SB.err)+(P?'':' <a data-pwa="retry">'+esc(t('Try again'))+'</a>')+'</div>':'')
