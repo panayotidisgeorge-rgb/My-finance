@@ -1,0 +1,86 @@
+name: iOS build (TestFlight)
+# Manual run only. Needs 4 repository secrets (see ios-app/APPLE-SETUP.md):
+#   APPLE_TEAM_ID, ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8_B64
+on:
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: 'Upload to App Store Connect (TestFlight)'
+        type: boolean
+        default: true
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    env:
+      TEAM: ${{ secrets.APPLE_TEAM_ID }}
+      KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ISSUER: ${{ secrets.ASC_ISSUER_ID }}
+      KEY_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Check secrets
+        run: |
+          for v in TEAM KEY_ID ISSUER KEY_B64; do
+            if [ -z "${!v}" ]; then echo "Missing secret for $v (see ios-app/APPLE-SETUP.md)"; exit 1; fi
+          done
+      - name: Web files, dependencies, iOS project
+        working-directory: ios-app
+        run: |
+          bash build_web.sh
+          npm install
+          npx cap add ios
+          npx cap sync ios
+          grep -E "NativePurchases|InAppReview|BiometricAuth" ios/App/App/capacitor.config.json ios/App/App/*.json 2>/dev/null || true
+      - name: App icon, Info.plist, version
+        working-directory: ios-app
+        env:
+          RUN_NO: ${{ github.run_number }}
+        run: |
+          APP=ios/App/App
+          ICONSET=$APP/Assets.xcassets/AppIcon.appiconset
+          cp AppIcon-1024.png "$ICONSET/AppIcon-512@2x.png"
+          cat "$ICONSET/Contents.json" | head -20
+          PL=$APP/Info.plist
+          pb() { /usr/libexec/PlistBuddy -c "$1" "$PL" 2>/dev/null || true; }
+          pb "Delete :ITSAppUsesNonExemptEncryption"; pb "Add :ITSAppUsesNonExemptEncryption bool false"
+          pb "Delete :NSFaceIDUsageDescription"; pb "Add :NSFaceIDUsageDescription string Unlock SpendPattern with Face ID so only you can open your finances."
+          pb "Set :CFBundleDisplayName SpendPattern"
+          pb "Set :CFBundleShortVersionString 1.0"
+          pb "Set :CFBundleVersion $RUN_NO"
+          plutil -p "$PL" | head -40
+          # iPhone + iPad
+          sed -i '' 's/TARGETED_DEVICE_FAMILY = [^;]*;/TARGETED_DEVICE_FAMILY = "1,2";/' $APP/../App.xcodeproj/project.pbxproj
+          sed -i '' "s/DEVELOPMENT_TEAM = [^;]*;/DEVELOPMENT_TEAM = $TEAM;/g; s/CURRENT_PROJECT_VERSION = [^;]*;/CURRENT_PROJECT_VERSION = $RUN_NO;/g" $APP/../App.xcodeproj/project.pbxproj
+          grep -c "DEVELOPMENT_TEAM = $TEAM" $APP/../App.xcodeproj/project.pbxproj || true
+      - name: App Store Connect API key
+        run: |
+          mkdir -p ~/private_keys
+          echo "$KEY_B64" | base64 -d > ~/private_keys/AuthKey_${KEY_ID}.p8
+          ls -l ~/private_keys
+      - name: Archive
+        working-directory: ios-app/ios/App
+        run: |
+          WS=""; [ -d App.xcworkspace ] && WS="-workspace App.xcworkspace" || WS="-project App.xcodeproj"
+          xcodebuild archive $WS -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_${KEY_ID}.p8 \
+            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" \
+            DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic | tail -60
+      - name: Export and upload to App Store Connect
+        if: ${{ inputs.upload }}
+        working-directory: ios-app/ios/App
+        run: |
+          sed "s/__TEAM__/$TEAM/" ../../ExportOptions.plist > "$RUNNER_TEMP/Export.plist"
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/Export.plist" -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_${KEY_ID}.p8 \
+            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" | tail -40
+      - name: Remove key
+        if: always()
+        run: rm -rf ~/private_keys
