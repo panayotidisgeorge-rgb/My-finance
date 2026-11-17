@@ -59,7 +59,8 @@ jobs:
       - name: App Store Connect API key
         run: |
           mkdir -p ~/private_keys
-          echo "$KEY_B64" | base64 -d > ~/private_keys/AuthKey_${KEY_ID}.p8
+          if echo "$KEY_B64" | grep -q "BEGIN PRIVATE KEY"; then printf '%s\n' "$KEY_B64" > ~/private_keys/AuthKey_${KEY_ID}.p8; else echo "$KEY_B64" | base64 -d > ~/private_keys/AuthKey_${KEY_ID}.p8; fi
+          head -c 27 ~/private_keys/AuthKey_${KEY_ID}.p8; echo
           ls -l ~/private_keys
       - name: Archive
         working-directory: ios-app/ios/App

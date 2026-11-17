@@ -9,7 +9,7 @@ Bundle ID: `app.spendpattern.finance` · Subscription products: `spendpattern_pr
 
 ## 2. Four GitHub secrets
 github.com/panayotidisgeorge-rgb/My-finance → Settings → Secrets and variables → Actions → New repository secret:
-`APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8_B64` (the base64 text). Enter them yourself in GitHub; never paste the key in a chat.
+`APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8_B64` (the full text of the .p8 file, or its base64). Enter them yourself in GitHub; never paste the key in a chat.
 
 ## 3. App record in App Store Connect
 My Apps → "+" → New App: platform iOS, name SpendPattern, primary language English (U.S.), bundle ID `app.spendpattern.finance` (if missing in the list, register it first at developer.apple.com → Identifiers), SKU `spendpattern-ios`, full access.
