@@ -61,9 +61,19 @@ jobs:
       - name: App Store Connect API key
         run: |
           mkdir -p ~/private_keys
-          if echo "$KEY_B64" | grep -q "BEGIN PRIVATE KEY"; then printf '%s\n' "$KEY_B64" > ~/private_keys/AuthKey_${KEY_ID}.p8; else echo "$KEY_B64" | base64 -d > ~/private_keys/AuthKey_${KEY_ID}.p8; fi
-          head -c 27 ~/private_keys/AuthKey_${KEY_ID}.p8; echo
-          ls -l ~/private_keys
+          F=~/private_keys/AuthKey_${KEY_ID}.p8
+          # Accept: full PEM text, header-less base64 body, or base64 of the whole PEM file.
+          RAW=$(printf '%s' "$KEY_B64" | tr -d '\r')
+          if printf '%s' "$RAW" | grep -q "BEGIN"; then TXT="$RAW"
+          else
+            DEC=$(printf '%s' "$RAW" | tr -d '\n ' | base64 -d 2>/dev/null || true)
+            if printf '%s' "$DEC" | grep -q "BEGIN"; then TXT="$DEC"; else TXT="$RAW"; fi
+          fi
+          BODY=$(printf '%s\n' "$TXT" | grep -v -e '-----' | tr -d ' \n')
+          { echo "-----BEGIN PRIVATE KEY-----"; printf '%s' "$BODY" | fold -w 64; echo; echo "-----END PRIVATE KEY-----"; } > "$F"
+          chmod 600 "$F"
+          head -1 "$F"; wc -l < "$F"
+          openssl pkey -in "$F" -noout && echo "key format OK"
       - name: Archive
         working-directory: ios-app/ios/App
         run: |
@@ -73,7 +83,7 @@ jobs:
             -allowProvisioningUpdates \
             -authenticationKeyPath ~/private_keys/AuthKey_${KEY_ID}.p8 \
             -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" \
-            DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic | tail -60
+            DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic 2>&1 | tail -60; test ${PIPESTATUS[0]} -eq 0
       - name: Export and upload to App Store Connect
         if: ${{ inputs.upload }}
         working-directory: ios-app/ios/App
@@ -83,7 +93,7 @@ jobs:
             -exportOptionsPlist "$RUNNER_TEMP/Export.plist" -exportPath "$RUNNER_TEMP/export" \
             -allowProvisioningUpdates \
             -authenticationKeyPath ~/private_keys/AuthKey_${KEY_ID}.p8 \
-            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" | tail -40
+            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" 2>&1 | tail -40; test ${PIPESTATUS[0]} -eq 0
       - name: Remove key
         if: always()
         run: rm -rf ~/private_keys
